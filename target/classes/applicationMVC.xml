@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<mvc:interceptors><!-- 定义拦截器栈，可以定义有多个拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/pages/**/*.action"/>
+			<bean class="cn.mldn.util.validate.ValidationInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>	
+	<!-- 配置一个全局的异常跳转映射，只要出现指定错误信息，那么久跳转到指定页面 -->
+	<!-- 此处为文件上传过大进行跳转的错误路径，跳转到安全访问目录 -->
+	<bean id="exceptionMapping" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">
+					errors
+				</prop>
+			</props>
+		</property>
+	</bean>	
+	<!-- 定义文件的上传配置支持 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSizePerFile" value="5242880"/>
+		<property name="maxInMemorySize" value="4096"/>
+	</bean>
+	<!-- 资源文件读取 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<array>
+				<value>Messages</value>
+				<value>Pages</value>
+				<value>Validations</value>
+			</array>
+		</property>
+	</bean>
+	<!-- WEB-INF目录下安全访问 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	<mvc:annotation-driven/><!-- 启动mvc注解配置 -->
+	<mvc:default-servlet-handler/><!-- 启用处理请求的servlet -->
+	<context:annotation-config/>
+	<context:component-scan base-package="cn.mldn.action"/>
+</beans>

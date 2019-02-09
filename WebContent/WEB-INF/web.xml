@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>ssm(spring+mybatis)</display-name>
+    <!-- spring监听器,进行spring容器加载 -->
+  <listener>
+  	<listener-class>
+  		org.springframework.web.context.ContextLoaderListener
+  	</listener-class>
+  </listener>
+  <!-- spring容器所需要的配置文件 -->
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+  <!-- 定义一个spring mvc 所需要的servlet程序 -->
+  <servlet>
+  	<servlet-name>springmvc</servlet-name>
+  	<!-- springmvc提供的servlet程序，可以处理用户请求 -->
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<!-- 配置springmvc所需要的配置文件，可以与spring容器写在一起 -->
+  	<init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>classpath:applicationMVC.xml</param-value>
+  	</init-param>
+  </servlet>
+  <!-- springmvc中所有路径的请求映射 -->
+  <servlet-mapping>
+  	<servlet-name>springmvc</servlet-name>
+  	<url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+  <!-- spring中提供编码过滤 -->
+  <filter>
+  	<filter-name>encoding</filter-name>
+  	<filter-class>
+  		org.springframework.web.filter.CharacterEncodingFilter
+  	</filter-class>
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>
+  </filter>
+  <filter-mapping>
+  	<filter-name>encoding</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

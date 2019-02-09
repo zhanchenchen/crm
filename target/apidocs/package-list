@@ -1,0 +1,14 @@
+cn.mldn.action
+cn.mldn.dao
+cn.mldn.dao.impl
+cn.mldn.service
+cn.mldn.service.abs
+cn.mldn.service.back.abs
+cn.mldn.service.front.abs
+cn.mldn.service.impl
+cn.mldn.util.action
+cn.mldn.util.file
+cn.mldn.util.resource
+cn.mldn.util.validate
+cn.mldn.util.validator
+cn.mldn.vo

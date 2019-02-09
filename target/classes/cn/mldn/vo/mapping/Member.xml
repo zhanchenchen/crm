@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 在每一个配置文件之中实际上都需要有一个独立的命名空间（名字，日后引用就需要此名称） -->
+<!-- 考虑到后续要进行相关的日志的配置操作，所以对于这个资源文件都建议设置一个包名称 -->
+<!-- 命名空间（Name Space），所以习惯“包名称 + VO名称 + NS” -->
+<mapper namespace="cn.mldn.vo.mapping.MemberNS">
+	<!-- 定义要进行数据追加操作的SQL语句，每一个SQL都需要有一个自己独立的ID，这个ID为程序引用 -->
+	<insert id="doCreate" parameterType="Member">
+		INSERT INTO member(mid,name,age,salary,birthday,note) 
+		VALUES (#{mid},#{name},#{age},#{salary},#{birthday},#{note}) ;
+	</insert>
+	<select id="findAllSplit" parameterType="java.util.Map" resultType="Member">
+		select mid,name,age,salary,birthday,note from member
+		<where>
+			<if test="column !=null and keyWord != null">
+				${column} like "%"#{keyWord}"%"
+			</if>
+		</where>
+		limit #{start},#{lineSize}
+	</select>
+</mapper>
