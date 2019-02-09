@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Type implements Serializable {
 	private int tid;
 	private String title;
+	private String flag;
 	public int getTid() {
 		return tid;
 	}
